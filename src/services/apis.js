@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// En tu frontend
-const API_URL = 'https://cors-anywhere.herokuapp.com/https://task-server-nu-opal.vercel.app';
+const API_URL = process.env.REACT_APP_API_URL;
 const api = axios.create({
   baseURL: API_URL,
 });
