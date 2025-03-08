@@ -2,18 +2,23 @@ import React from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { authService } from '../services/apis';
 
 const Register = () => {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
     try {
-      const response = await axios.post('http://localhost:3000/register', values);
-      console.log('Respuesta del servidor:', response.data);
+      // Utilizando el servicio de autenticación en lugar de axios directamente
+      const response = await authService.register(values);
+      console.log('Respuesta del servidor:', response);
 
-      message.success('Registro exitoso!');
-      navigate('/'); 
+      if (response.success) {
+        message.success(response.message || 'Registro exitoso!');
+        navigate('/'); // Redirige al login
+      } else {
+        message.error(response.message || 'Error al registrar');
+      }
     } catch (error) {
       console.error('Error al registrar:', error);
       if (error.response) {
